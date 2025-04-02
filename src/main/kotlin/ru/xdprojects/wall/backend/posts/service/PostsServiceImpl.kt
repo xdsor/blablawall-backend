@@ -44,7 +44,7 @@ class PostsServiceImpl(
         val postEntity = PostEntity(
             title = newPostDto.title,
             content = newPostDto.content,
-            author = userRepository.findById(authorId).get(),
+            author = userRepository.findById(authorId).getOrNull() ?: throw RuntimeException("User by id $authorId not found"),
             createdAt = LocalDateTime.now(),
             replies = mutableListOf(),
             likedBy = mutableListOf(),

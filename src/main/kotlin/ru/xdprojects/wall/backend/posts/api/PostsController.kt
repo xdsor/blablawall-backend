@@ -6,14 +6,17 @@ import org.springframework.hateoas.EntityModel
 import org.springframework.hateoas.PagedModel
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import ru.xdprojects.wall.backend.posts.api.dto.*
+import ru.xdprojects.wall.backend.posts.api.dto.NewPostDto
+import ru.xdprojects.wall.backend.posts.api.dto.NewReplyDto
+import ru.xdprojects.wall.backend.posts.api.dto.PostDto
+import ru.xdprojects.wall.backend.posts.api.dto.PostPreviewDto
 import ru.xdprojects.wall.backend.posts.service.PostsService
+import ru.xdprojects.wall.backend.security.models.DomainAuthentication
 
 const val MAX_PAGE_SIZE = 15
 
 @RequestMapping("/api/posts")
 @RestController
-@CrossOrigin(origins = ["*"])
 class PostsController(
     private val postsService: PostsService
 ) {
@@ -38,17 +41,21 @@ class PostsController(
 
     @PostMapping("", consumes = ["application/json"], produces = ["application/json"])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createNewPost(@RequestBody post: NewPostDto): PostDto {
-        return postsService.createNewPost(post, "random")
+    fun createNewPost(@RequestBody post: NewPostDto, authentication: DomainAuthentication): PostDto {
+        return postsService.createNewPost(post, authentication.name)
     }
 
     @PostMapping("/{id}/reply", consumes = ["application/json"], produces = ["application/json"])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createNewReply(@PathVariable id: Long, @RequestBody reply: NewReplyDto): PostDto {
+    fun createNewReply(
+        @PathVariable id: Long,
+        @RequestBody reply: NewReplyDto,
+        authentication: DomainAuthentication
+    ): PostDto {
         return postsService.createNewReply(
             postId = id,
             newReplyDto = reply,
-            authorId = "random"
+            authorId = authentication.name
         )
     }
 

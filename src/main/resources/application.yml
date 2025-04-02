@@ -1,3 +1,7 @@
+server:
+  servlet:
+    context-path: /app
+
 spring:
   application:
     name: backend
@@ -14,9 +18,29 @@ spring:
     enabled: true
     schemas: wall_backend_flyway
     baseline-on-migrate: true
-
+  security:
+    oauth2:
+      client:
+        registration:
+          yandex:
+            provider: yandex
+            client-id: ${OAUTH_YANDEX_CLIENT_ID}
+            client-secret: ${OAUTH_YANDEX_CLIENT_SECRET}
+            scope: login:email,login:avatar
+            authorization-grant-type: authorization_code
+            redirect-uri: ${WEB_ORIGIN:https://localhost}/app/{action}/oauth2/code/{registrationId}
+        provider:
+          yandex:
+            authorization-uri: https://oauth.yandex.ru/authorize
+            token-uri: https://oauth.yandex.ru/token
+            user-info-uri: https://login.yandex.ru/info
+            user-name-attribute: id
 management:
   endpoints:
     web:
       exposure:
         include: health,info,prometheus
+
+app:
+  cors:
+    allowed-origin: ${WEB_ORIGIN:https://localhost}
