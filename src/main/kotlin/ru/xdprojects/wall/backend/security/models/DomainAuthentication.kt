@@ -7,10 +7,7 @@ class DomainAuthentication(
     authorities: List<GrantedAuthority>,
     val domainPrincipal: DomainPrincipal,
 ) : AbstractAuthenticationToken(authorities) {
-    override fun getCredentials(): Any? {
-        return null
-    }
-
+    override fun getCredentials(): Any? = null
     override fun getPrincipal(): DomainPrincipal = this.domainPrincipal
     override fun isAuthenticated(): Boolean = true
     override fun getName(): String = this.domainPrincipal.userId
