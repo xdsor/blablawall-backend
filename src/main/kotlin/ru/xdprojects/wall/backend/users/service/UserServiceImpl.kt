@@ -26,7 +26,7 @@ fun DomainPrincipal.toUserEntity(): UserEntity {
         id = this.userId,
         name = this.username,
         profileImageUrl = this.profilePictureUrl,
-        activated = true,
+        activated = false,
         invitedBy = null,
         dateJoined = LocalDateTime.now(),
     )
