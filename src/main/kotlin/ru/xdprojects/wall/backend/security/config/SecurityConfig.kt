@@ -26,7 +26,7 @@ class SecurityConfig(
         http
             .csrf { csrf -> csrf.disable() }
             .authorizeHttpRequests { auth ->
-                auth.requestMatchers(HttpMethod.GET,"/app/api/users/self-info").authenticated()
+                auth.requestMatchers(HttpMethod.GET,"/api/users/self-info").authenticated()
                 auth.requestMatchers("/login**").permitAll()
                 auth.requestMatchers("/oauth2**").permitAll()
                     .anyRequest().access(userActivatedAuthenticationManager)
