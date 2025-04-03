@@ -3,6 +3,7 @@ package ru.xdprojects.wall.backend.security.config
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authorization.AuthorizationManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.SecurityFilterChain
@@ -25,6 +26,7 @@ class SecurityConfig(
         http
             .csrf { csrf -> csrf.disable() }
             .authorizeHttpRequests { auth ->
+                auth.requestMatchers(HttpMethod.GET,"/app/api/users/self-info").authenticated()
                 auth.requestMatchers("/login**").permitAll()
                 auth.requestMatchers("/oauth2**").permitAll()
                     .anyRequest().access(userActivatedAuthenticationManager)
